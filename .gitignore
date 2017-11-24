@@ -1,3 +1,5 @@
+.idea
+
 # CakePHP specific files #
 ##########################
 /config/app.php
@@ -6,6 +8,7 @@
 /logs/*
 /tmp/*
 /vendor/*
+
 
 # OS generated files #
 ######################
