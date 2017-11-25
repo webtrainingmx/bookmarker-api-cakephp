@@ -19,6 +19,7 @@ use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use App\Middleware\CorsMiddleware;
 
 /**
  * Application setup class.
@@ -46,6 +47,9 @@ class Application extends BaseApplication
 
             // Add routing middleware.
             ->add(new RoutingMiddleware($this));
+
+            // Add CORS
+//            ->add(new CorsMiddleware($this));
 
         return $middlewareQueue;
     }
