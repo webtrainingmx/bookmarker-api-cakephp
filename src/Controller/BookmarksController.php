@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -79,21 +80,33 @@ class BookmarksController extends AppController
     public function edit($id = null)
     {
         $bookmark = $this->Bookmarks->get($id, [
-            'contain' => ['Tags']
+            'contain' => ['Tags','Users']
         ]);
+
+        $message = 'Response from API';
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $bookmark = $this->Bookmarks->patchEntity($bookmark, $this->request->getData());
             if ($this->Bookmarks->save($bookmark)) {
-                $this->Flash->success(__('The bookmark has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                if ($this->request->is('ajax')) {
+                    $message = 'Finished!';
+                } else {
+                    $this->Flash->success(__('The bookmark has been saved.'));
+                    return $this->redirect(['action' => 'index']);
+                }
+
+            } else {
+                $message = 'Unable to save bookmark';
             }
-            $this->Flash->error(__('The bookmark could not be saved. Please, try again.'));
+
         }
+
         $users = $this->Bookmarks->Users->find('list', ['limit' => 200]);
         $tags = $this->Bookmarks->Tags->find('list', ['limit' => 200]);
-        $this->set(compact('bookmark', 'users', 'tags'));
-        $this->set('_serialize', ['bookmark']);
+        $this->set(compact('bookmark', 'users', 'tags', 'message'));
+        $this->set('_serialize', ['bookmark','message']);
+
     }
 
     /**
